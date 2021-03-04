@@ -16,6 +16,14 @@ public class CustomMidiDevice implements MidiDevice {
         return !(device instanceof Sequencer) && !(device instanceof Synthesizer);
     }
 
+    public boolean isOutput() {
+        return getMaxReceivers() == 0;
+    }
+
+    public boolean isInput() {
+        return getMaxTransmitters() == 0;
+    }
+
     @Override
     public Info getDeviceInfo() {
         return deviceInfo;
@@ -73,11 +81,13 @@ public class CustomMidiDevice implements MidiDevice {
 
     @Override
     public String toString() {
-        return String.format("MidiDevice {name: %s, description: %s, vendor: %s, version: %s, isMidiPort: %s}",
+        return String.format("MidiDevice {name: %s, description: %s, vendor: %s, version: %s, isMidiPort: %s, isOutput: %s, isInput: %s}",
                 deviceInfo.getName(),
                 deviceInfo.getDescription(),
                 deviceInfo.getVendor(),
                 deviceInfo.getVersion(),
-                isMidiPort());
+                isMidiPort(),
+                isOutput(),
+                isInput());
     }
 }

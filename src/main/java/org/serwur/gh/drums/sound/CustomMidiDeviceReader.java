@@ -6,30 +6,38 @@ import javax.sound.midi.MidiUnavailableException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MidiDeviceReader {
-    private List<CustomMidiDevice> inputDevices = new ArrayList<>();
-    private List<CustomMidiDevice> outputDevices = new ArrayList<>();
-    private List<CustomMidiDevice> sequencerDevices = new ArrayList<>();
+public class CustomMidiDeviceReader {
+    private final List<CustomMidiDevice> inputDevices = new ArrayList<>();
+    private final List<CustomMidiDevice> outputDevices = new ArrayList<>();
+    private final List<CustomMidiDevice> sequencerDevices = new ArrayList<>();
 
-    public MidiDeviceReader() throws MidiUnavailableException {
+    public CustomMidiDeviceReader() throws MidiUnavailableException {
         reloadDevices();
     }
 
     public void reloadDevices() throws MidiUnavailableException {
+        outputDevices.clear();
+        inputDevices.clear();
+        sequencerDevices.clear();
+
         for (MidiDevice.Info info : MidiSystem.getMidiDeviceInfo()) {
             CustomMidiDevice customMidiDevice = new CustomMidiDevice(info);
-            if (isOutputDevice(customMidiDevice)) outputDevices.add(customMidiDevice);
-            else if (isInputDevice(customMidiDevice)) inputDevices.add(customMidiDevice);
+            if (customMidiDevice.isOutput()) outputDevices.add(customMidiDevice);
+            else if (customMidiDevice.isInput()) inputDevices.add(customMidiDevice);
             else sequencerDevices.add(customMidiDevice);
         }
     }
 
-    private boolean isOutputDevice(MidiDevice midiDevice) {
-        return midiDevice.getMaxReceivers() == 0;
+    public boolean hasInputDevices() {
+        return !inputDevices.isEmpty();
     }
 
-    private boolean isInputDevice(MidiDevice midiDevice) {
-        return midiDevice.getMaxTransmitters() == 0;
+    public boolean hasOutputDevices() {
+        return !outputDevices.isEmpty();
+    }
+
+    public boolean hasSequencerDevices() {
+        return !sequencerDevices.isEmpty();
     }
 
     public List<CustomMidiDevice> getInputDevices() {

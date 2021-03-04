@@ -8,8 +8,9 @@
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
-# IntelliJ
-out/
-
 # java
 target
+
+# eclipse
+.classpath
+.project
