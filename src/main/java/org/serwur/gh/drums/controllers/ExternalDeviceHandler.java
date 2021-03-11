@@ -13,8 +13,8 @@ import java.util.Set;
 public class ExternalDeviceHandler extends Thread implements Iterable<Event> {
     private final ExternalDevice externalDevice;
 
-    private RunningHandler runner = new RunningHandler(this);
-    private Set<DeviceInputListener> listeners = new HashSet<>();
+    private final RunningHandler runner = new RunningHandler(this);
+    private final Set<DeviceInputListener> listeners = new HashSet<>();
 
     public ExternalDeviceHandler(ExternalDevice externalDevice) {
         this.externalDevice = externalDevice;
